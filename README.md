@@ -152,4 +152,4 @@ Content-Type: application/json
 
 ## 👨‍💻 Autor
 
-Proyecto educativo para aprender tecnologías empresariales Java.
+Juan Diego Nieves
