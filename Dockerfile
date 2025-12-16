@@ -1,34 +1,17 @@
-# Dockerfile para NexusPOS Backend (Spring Boot)
-FROM maven:3.9-eclipse-temurin-17-alpine AS build
+# 1. Etapa de Construcción (Build)
+FROM maven:3.8.5-openjdk-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Directorio de trabajo
+# 2. Etapa de Ejecución (Run)
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-# Copiar pom.xml primero para cachear dependencias
-COPY pom.xml .
-
-# Descargar dependencias (se cachea si pom.xml no cambia)
-RUN mvn dependency:go-offline -B
-
-# Copiar código fuente
-COPY src src
-
-# Compilar aplicación
-RUN mvn clean package -DskipTests -B
-
-# Etapa final - imagen ligera
-FROM eclipse-temurin:17-jre-alpine
-
-WORKDIR /app
-
-# Copiar JAR compilado desde la etapa build
+# Aquí está el TRUCO: Copiamos cualquier .jar generado y lo renombramos a app.jar
 COPY --from=build /app/target/*.jar app.jar
 
-# Puerto de la aplicación
 EXPOSE 8080
 
-# Variables de entorno por defecto (se pueden sobreescribir)
-ENV SPRING_PROFILES_ACTIVE=prod
-
-# Comando de inicio - Railway usa $PORT
-CMD ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
+# Railway usa la variable $PORT - usamos sh para expandirla correctamente
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
