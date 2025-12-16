@@ -1,52 +1,25 @@
-# ===================================
-# GITIGNORE PARA SPRING BOOT + MAVEN
-# ===================================
-
-# Compilados
+# Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-# Logs
-logs/
-*.log
-spring.log
-
-# IntelliJ IDEA
+# IDE
 .idea/
-*.iws
 *.iml
+*.iws
 *.ipr
-out/
-
-# VS Code
 .vscode/
-.history/
-
-# Eclipse
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-# MacOS
 .DS_Store
 
-# Windows
-Thumbs.db
+# Logs
+*.log
 
-# Variables de entorno
+# Environment
 .env
 .env.local
 .env.production
 
-# Base de datos local
-*.db
-*.sqlite
-
-# Maven Wrapper (opcional, puedes incluirlo si quieres)
-.mvn/wrapper/maven-wrapper.jar
+# Spring Boot
+application-local.properties
+application-dev.properties
