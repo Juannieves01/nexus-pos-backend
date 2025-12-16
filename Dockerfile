@@ -1,5 +1,5 @@
 # Dockerfile para NexusPOS Backend (Spring Boot)
-FROM maven:3.9-eclipse-temurin-21-alpine AS build
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
 
 # Directorio de trabajo
 WORKDIR /app
@@ -14,10 +14,10 @@ RUN mvn dependency:go-offline -B
 COPY src src
 
 # Compilar aplicación
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
 # Etapa final - imagen ligera
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
@@ -29,7 +29,6 @@ EXPOSE 8080
 
 # Variables de entorno por defecto (se pueden sobreescribir)
 ENV SPRING_PROFILES_ACTIVE=prod
-ENV PORT=8080
 
-# Comando de inicio
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando de inicio - Railway usa $PORT
+CMD ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
