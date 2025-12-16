@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ['maven', 'jdk21']
+nixPkgs = ['maven', 'jdk17']
 
 [phases.build]
-cmds = ['mvn clean package -DskipTests']
+cmds = ['mvn clean package -DskipTests -B']
 
 [start]
-cmd = 'java -jar target/*.jar'
+cmd = 'java -Dserver.port=$PORT -jar target/nexus-pos-backend-1.0.0.jar'
